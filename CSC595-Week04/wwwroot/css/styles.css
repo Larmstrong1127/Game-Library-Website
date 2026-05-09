@@ -1,0 +1,13 @@
+h1 {
+    color: blue;
+}
+
+/* Class Selector */
+.my-class {
+    font-weight: bold;
+}
+
+/* ID Selector */
+#my-id {
+    font-style: italic;
+}

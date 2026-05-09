@@ -1,0 +1,36 @@
+@model Product
+@using CSC595_Week04.Models
+
+@{
+    ViewData["Title"] = "Delete Game";
+    Layout = "_Layout";
+}
+
+<div class="page-header">
+    <h1><i class="bi bi-trash-fill text-accent me-2"></i>Delete Game</h1>
+</div>
+
+<div class="detail-card" style="max-width:480px;">
+    <p class="mb-3" style="color:#fca5a5;">
+        <i class="bi bi-exclamation-triangle me-2"></i>
+        This action cannot be undone. The game will be permanently removed from the library.
+    </p>
+
+    @if (Model != null)
+    {
+        <p class="mb-1"><span class="text-muted">Name:</span> <strong>@Model.Name</strong></p>
+        <p class="mb-3"><span class="text-muted">Price:</span> <span class="badge-price">$@Model.Price.ToString("F2")</span></p>
+    }
+
+    <form asp-action="Delete" method="post">
+        <!-- Pass the ID through a hidden field since the GET version has no id param -->
+        @if (Model != null)
+        {
+            <input type="hidden" name="id" value="@Model.Id" />
+        }
+        <div class="d-flex gap-2">
+            <input type="submit" value="Yes, Delete" class="btn btn-danger" />
+            <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>

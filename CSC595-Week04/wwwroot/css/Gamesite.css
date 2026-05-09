@@ -1,0 +1,289 @@
+/* ============================================================
+   GG Game Library  —  Cyberpunk Neon Theme
+   Dark background with cyan and magenta neon accents
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;500;600;700&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; }
+
+:root {
+    --bg-deep:    #05050f;
+    --bg-card:    #0d0d1f;
+    --bg-surface: #12122a;
+    --cyan:       #00f5d4;
+    --cyan-dim:   #00bfa5;
+    --pink:       #f72585;
+    --pink-dim:   #b5179e;
+    --purple:     #7209b7;
+    --text:       #e0e0f0;
+    --text-muted: #6b6b8a;
+    --border:     rgba(0, 245, 212, 0.15);
+}
+
+body {
+    background-color: var(--bg-deep);
+    background-image:
+        linear-gradient(rgba(0,245,212,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,245,212,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    font-family: 'Rajdhani', 'Segoe UI', sans-serif;
+    color: var(--text);
+    line-height: 1.6;
+    padding-bottom: 80px;
+    min-height: 100vh;
+}
+
+/* ── Typography ─────────────────────────────────────────────── */
+h1, h2, h3 {
+    font-family: 'Orbitron', monospace;
+    color: #ffffff;
+    letter-spacing: 1px;
+}
+
+p { color: var(--text-muted); }
+
+a { color: var(--cyan); transition: color 0.2s; }
+a:hover { color: #fff; text-decoration: none; }
+
+/* ── Navigation ─────────────────────────────────────────────── */
+.navbar {
+    background: rgba(5,5,15,0.95) !important;
+    border-bottom: 1px solid var(--cyan);
+    box-shadow: 0 0 30px rgba(0,245,212,0.2);
+    padding: 0.75rem 1.5rem;
+    backdrop-filter: blur(10px);
+}
+
+.navbar-brand {
+    font-family: 'Orbitron', monospace !important;
+    font-size: 1.3rem !important;
+    font-weight: 900 !important;
+    color: var(--cyan) !important;
+    text-shadow: 0 0 10px var(--cyan), 0 0 20px var(--cyan);
+    letter-spacing: 2px;
+}
+
+.navbar-brand span { color: var(--pink); text-shadow: 0 0 10px var(--pink); }
+
+.nav-link {
+    color: var(--text) !important;
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 600;
+    font-size: 0.95rem;
+    letter-spacing: 0.5px;
+    padding: 0.4rem 0.9rem !important;
+    border-radius: 4px;
+    border: 1px solid transparent;
+    transition: all 0.2s;
+}
+
+.nav-link:hover {
+    color: var(--cyan) !important;
+    border-color: var(--border);
+    background: rgba(0,245,212,0.05);
+    text-shadow: 0 0 8px var(--cyan);
+}
+
+/* ── Main Container ─────────────────────────────────────────── */
+.main-container {
+    max-width: 1100px;
+    margin: 2rem auto;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 2rem;
+    box-shadow: 0 0 40px rgba(0,245,212,0.05), inset 0 0 60px rgba(0,0,0,0.3);
+    position: relative;
+}
+
+/* Corner accents */
+.main-container::before, .main-container::after {
+    content: '';
+    position: absolute;
+    width: 20px; height: 20px;
+    border-color: var(--cyan);
+    border-style: solid;
+}
+.main-container::before { top: -1px; left: -1px; border-width: 2px 0 0 2px; }
+.main-container::after  { bottom: -1px; right: -1px; border-width: 0 2px 2px 0; }
+
+/* ── Page Header ─────────────────────────────────────────────── */
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.page-header h1 { margin: 0; font-size: 1.5rem; }
+
+/* ── Tables ─────────────────────────────────────────────────── */
+.table { color: var(--text); border-color: var(--border); }
+
+.table thead th {
+    background: rgba(0,245,212,0.07);
+    color: var(--cyan);
+    border-color: var(--border);
+    font-family: 'Orbitron', monospace;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    padding: 0.9rem 1rem;
+}
+
+.table tbody tr { transition: background 0.15s; }
+.table tbody tr:hover { background: rgba(0,245,212,0.04); }
+.table td { vertical-align: middle; border-color: rgba(255,255,255,0.04); padding: 0.75rem 1rem; }
+
+/* ── Buttons ─────────────────────────────────────────────────── */
+.btn-primary {
+    background: transparent;
+    border: 1px solid var(--cyan);
+    color: var(--cyan);
+    border-radius: 3px;
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+    transition: all 0.2s;
+}
+
+.btn-primary:hover {
+    background: var(--cyan);
+    color: var(--bg-deep);
+    box-shadow: 0 0 15px var(--cyan), 0 0 30px rgba(0,245,212,0.3);
+}
+
+.btn-secondary {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.2);
+    color: var(--text);
+    border-radius: 3px;
+}
+
+.btn-secondary:hover {
+    border-color: rgba(255,255,255,0.5);
+    color: #fff;
+}
+
+.btn-danger {
+    background: transparent;
+    border: 1px solid var(--pink);
+    color: var(--pink);
+    border-radius: 3px;
+}
+
+.btn-danger:hover {
+    background: var(--pink);
+    color: #fff;
+    box-shadow: 0 0 15px var(--pink);
+}
+
+.btn-sm { padding: 0.2rem 0.6rem; font-size: 0.8rem; }
+
+/* ── Forms ───────────────────────────────────────────────────── */
+.form-control, .form-select {
+    background: var(--bg-surface);
+    border: 1px solid rgba(0,245,212,0.2);
+    color: var(--text);
+    border-radius: 3px;
+    font-family: 'Rajdhani', sans-serif;
+}
+
+.form-control:focus, .form-select:focus {
+    background: var(--bg-surface);
+    border-color: var(--cyan);
+    color: #fff;
+    box-shadow: 0 0 0 2px rgba(0,245,212,0.15);
+}
+
+.form-control::placeholder { color: var(--text-muted); }
+.form-label { color: var(--cyan); font-weight: 600; font-size: 0.85rem; letter-spacing: 0.5px; font-family: 'Orbitron', monospace; }
+.form-group { margin-bottom: 1.25rem; }
+
+/* ── Search Bar ──────────────────────────────────────────────── */
+.search-bar {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding: 1rem 1.25rem;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+}
+
+.search-bar input { flex: 1; }
+
+/* ── Game Thumbnail ──────────────────────────────────────────── */
+.game-thumbnail {
+    width: 52px; height: 52px;
+    object-fit: cover;
+    border-radius: 3px;
+    border: 1px solid var(--border);
+    box-shadow: 0 0 8px rgba(0,245,212,0.1);
+}
+
+/* ── Detail Card ─────────────────────────────────────────────── */
+.detail-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1.5rem;
+}
+
+.detail-card img { border-radius: 4px; border: 1px solid var(--border); max-height: 280px; object-fit: cover; }
+
+/* ── Price Badge ─────────────────────────────────────────────── */
+.badge-price {
+    display: inline-block;
+    background: rgba(247,37,133,0.1);
+    color: var(--pink);
+    border: 1px solid rgba(247,37,133,0.3);
+    padding: 0.2rem 0.6rem;
+    border-radius: 3px;
+    font-weight: 700;
+    font-size: 0.875rem;
+    font-family: 'Orbitron', monospace;
+}
+
+/* ── Alerts ──────────────────────────────────────────────────── */
+.alert { border-radius: 3px; border: none; font-weight: 500; }
+.alert-danger  { background: rgba(247,37,133,0.1); color: #ff85b3; border-left: 3px solid var(--pink); }
+.alert-success { background: rgba(0,245,212,0.08); color: var(--cyan); border-left: 3px solid var(--cyan); }
+
+.text-danger  { color: #ff85b3 !important; }
+.text-muted   { color: var(--text-muted) !important; }
+.text-accent  { color: var(--cyan); }
+
+/* ── Pagination ──────────────────────────────────────────────── */
+.page-link {
+    background: var(--bg-surface);
+    border-color: var(--border);
+    color: var(--text);
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 600;
+}
+
+.page-link:hover { background: rgba(0,245,212,0.08); color: var(--cyan); border-color: var(--cyan); }
+.page-item.active .page-link { background: var(--cyan); border-color: var(--cyan); color: var(--bg-deep); font-weight: 700; }
+.page-item.disabled .page-link { background: var(--bg-surface); color: var(--text-muted); border-color: var(--border); }
+
+/* ── Footer ──────────────────────────────────────────────────── */
+footer {
+    background: rgba(5,5,15,0.97);
+    color: var(--text-muted);
+    padding: 1rem 0;
+    text-align: center;
+    position: fixed;
+    bottom: 0; width: 100%;
+    font-size: 0.875rem;
+    border-top: 1px solid var(--border);
+    font-family: 'Rajdhani', sans-serif;
+    letter-spacing: 0.5px;
+}
+
+footer p { margin: 0; color: var(--text-muted); }

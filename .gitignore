@@ -1,0 +1,23 @@
+# .NET build output
+bin/
+obj/
+
+# Visual Studio
+.vs/
+*.user
+
+# SQLite database files
+*.db
+*.db-shm
+*.db-wal
+
+# Sensitive configuration
+appsettings.Development.json
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log

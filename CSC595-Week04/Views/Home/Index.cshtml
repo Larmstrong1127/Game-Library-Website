@@ -1,0 +1,118 @@
+@using CSC595_Week04.Models
+@{
+    Layout = "_Layout";
+    ViewBag.Title = "Home";
+    int totalGames  = ViewBag.TotalGames  ?? 0;
+    int totalGenres = ViewBag.TotalGenres ?? 0;
+}
+
+<!-- ── Hero Banner ──────────────────────────────────────────── -->
+<div style="background: linear-gradient(135deg, #2d1b69 0%, #7c83fd 100%);
+            border-radius: 16px; padding: 4rem 2rem; text-align: center; margin-bottom: 2rem;">
+    <p style="color:#c4c4e0; letter-spacing:2px; font-size:0.85rem; text-transform:uppercase; margin-bottom:0.75rem;">
+        Your Digital Game Collection
+    </p>
+    <h1 style="color:#ffffff; font-size:2.8rem; font-weight:800; margin-bottom:0.75rem;">
+        <i class="bi bi-controller me-2"></i>GG Game Library
+    </h1>
+    <p style="color:#c4c4e0; font-size:1.1rem; max-width:520px; margin:0 auto 2rem;">
+        Browse, manage, and discover games across every genre.
+        Register to add your own titles to the collection.
+    </p>
+    <div class="d-flex justify-content-center gap-3 flex-wrap">
+        <a asp-controller="Product" asp-action="Index" class="btn btn-primary btn-lg">
+            <i class="bi bi-collection me-2"></i>Browse Library
+        </a>
+        @if (!User.Identity.IsAuthenticated)
+        {
+            <a asp-controller="Account" asp-action="Register"
+               class="btn btn-secondary btn-lg">
+                <i class="bi bi-person-plus me-2"></i>Create Account
+            </a>
+        }
+        else
+        {
+            <a asp-controller="Product" asp-action="Add"
+               class="btn btn-secondary btn-lg">
+                <i class="bi bi-plus-circle me-2"></i>Add a Game
+            </a>
+        }
+    </div>
+</div>
+
+<!-- ── Stats Row ───────────────────────────────────────────── -->
+<div class="row g-3 mb-4">
+    <div class="col-md-4">
+        <div style="background:rgba(124,131,253,0.08); border:1px solid rgba(124,131,253,0.2);
+                    border-radius:12px; padding:1.5rem; text-align:center;">
+            <div style="font-size:2rem; color:#7c83fd;"><i class="bi bi-collection-fill"></i></div>
+            <div style="font-size:2rem; font-weight:800; color:#fff;">@totalGames</div>
+            <div style="color:#8080a0;">Games in Library</div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div style="background:rgba(124,131,253,0.08); border:1px solid rgba(124,131,253,0.2);
+                    border-radius:12px; padding:1.5rem; text-align:center;">
+            <div style="font-size:2rem; color:#a78bfa;"><i class="bi bi-tags-fill"></i></div>
+            <div style="font-size:2rem; font-weight:800; color:#fff;">@totalGenres</div>
+            <div style="color:#8080a0;">Genres Covered</div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div style="background:rgba(124,131,253,0.08); border:1px solid rgba(124,131,253,0.2);
+                    border-radius:12px; padding:1.5rem; text-align:center;">
+            <div style="font-size:2rem; color:#86efac;"><i class="bi bi-shield-lock-fill"></i></div>
+            <div style="font-size:2rem; font-weight:800; color:#fff;">
+                @(User.Identity.IsAuthenticated ? "✓" : "—")
+            </div>
+            <div style="color:#8080a0;">
+                @(User.Identity.IsAuthenticated ? "Logged In" : "Guest Mode")
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ── Genre Quick-links ────────────────────────────────────── -->
+<div class="page-header">
+    <h2 style="font-size:1.3rem;"><i class="bi bi-tags text-accent me-2"></i>Browse by Genre</h2>
+</div>
+<div class="d-flex flex-wrap gap-2 mb-4">
+    @foreach (var g in Product.Genres)
+    {
+        <a asp-controller="Product" asp-action="Index" asp-route-genre="@g"
+           class="btn btn-secondary btn-sm">
+            @g
+        </a>
+    }
+</div>
+
+<!-- ── Recent Games ─────────────────────────────────────────── -->
+@if (ViewBag.RecentGames != null)
+{
+    <div class="page-header">
+        <h2 style="font-size:1.3rem;"><i class="bi bi-clock-history text-accent me-2"></i>Recently Added</h2>
+        <a asp-controller="Product" asp-action="Index" class="btn btn-secondary btn-sm">View All</a>
+    </div>
+    <div class="row g-3">
+        @foreach (var game in (IEnumerable<Product>)ViewBag.RecentGames)
+        {
+            <div class="col-md-4">
+                <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(124,131,253,0.2);
+                            border-radius:12px; padding:1.25rem;">
+                    <div class="d-flex justify-content-between align-items-start mb-1">
+                        <strong style="color:#fff;">@game.Name</strong>
+                        <span class="badge-price">$@game.Price.ToString("F2")</span>
+                    </div>
+                    <span style="background:rgba(124,131,253,0.15); color:#a78bfa; font-size:0.75rem;
+                                 padding:0.15rem 0.5rem; border-radius:4px;">@game.Genre</span>
+                    <div class="mt-2">
+                        <a asp-controller="Product" asp-action="ShowDetails" asp-route-id="@game.Id"
+                           class="btn btn-sm btn-secondary">
+                            <i class="bi bi-eye me-1"></i>Details
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

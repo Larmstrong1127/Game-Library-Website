@@ -1,0 +1,171 @@
+@model IEnumerable<Product>
+@using CSC595_Week04.Models
+
+@{
+    Layout = "_Layout";
+    ViewBag.Title = "Browse Games";
+    // Renamed from 'page' to avoid collision with the Razor @page directive
+    int currentPage = ViewBag.Page       ?? 1;
+    int totalPages  = ViewBag.TotalPages ?? 1;
+    int totalCount  = ViewBag.TotalCount ?? 0;
+    string? currentGenre  = ViewBag.Genre;
+    string? currentSort   = ViewBag.SortBy;
+    string? currentSearch = ViewBag.SearchByName;
+}
+
+<!-- ── Page Header ───────────────────────────────────────────── -->
+<div class="page-header">
+    <h1><i class="bi bi-collection-fill text-accent me-2"></i>Game Library</h1>
+    @if (User.Identity.IsAuthenticated)
+    {
+        <a asp-action="Add" asp-controller="Product" class="btn btn-primary">
+            <i class="bi bi-plus-circle me-1"></i>Add Game
+        </a>
+    }
+</div>
+
+<!-- ── Search + Filter + Sort ───────────────────────────────── -->
+<form asp-action="Index" asp-controller="Product" method="get">
+    <div class="search-bar flex-wrap">
+        <!-- Name search -->
+        <input class="form-control" name="searchByName" id="SearchInput"
+               placeholder="Search by game name..." value="@currentSearch"
+               style="min-width:180px;" />
+
+        <!-- Genre filter -->
+        <select name="genre" class="form-control" style="max-width:160px;">
+            <option value="">All Genres</option>
+            @foreach (var g in (string[])ViewBag.Genres)
+            {
+                <option value="@g" selected="@(currentGenre == g)">@g</option>
+            }
+        </select>
+
+        <!-- Sort -->
+        <select name="sortBy" class="form-control" style="max-width:180px;">
+            <option value="name_asc"  selected="@(currentSort == "name_asc"  || currentSort == null)">Name A–Z</option>
+            <option value="name_desc" selected="@(currentSort == "name_desc")">Name Z–A</option>
+            <option value="price_asc" selected="@(currentSort == "price_asc")">Price: Low–High</option>
+            <option value="price_desc"selected="@(currentSort == "price_desc")">Price: High–Low</option>
+        </select>
+
+        <button type="submit" class="btn btn-primary">
+            <i class="bi bi-search me-1"></i>Search
+        </button>
+        <a asp-action="Index" asp-controller="Product" class="btn btn-secondary">
+            <i class="bi bi-x-circle me-1"></i>Reset
+        </a>
+    </div>
+</form>
+
+<!-- ── Results ──────────────────────────────────────────────── -->
+@{
+    // Pre-compute pagination CSS classes here (top-level block) to avoid
+    // nested @{} inside an else branch, which Razor does not allow
+    var prevClass = currentPage <= 1          ? "page-item disabled" : "page-item";
+    var nextClass = currentPage >= totalPages ? "page-item disabled" : "page-item";
+}
+@if (!Model.Any())
+{
+    <div class="alert alert-danger">
+        <i class="bi bi-exclamation-circle me-2"></i>No games found matching your search.
+    </div>
+}
+else
+{
+    <table class="table table-hover table-bordered">
+        <thead>
+            <tr>
+                <th style="width:70px">Cover</th>
+                <th style="width:50px">#</th>
+                <th>Game Name</th>
+                <th>Genre</th>
+                <th>Price</th>
+                <th class="text-center">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in Model)
+            {
+                <tr>
+                    <td>
+                        @if (((Dictionary<int,string>)ViewBag.Photos).ContainsKey(product.Id))
+                        {
+                            <img src="@ViewBag.Photos[product.Id]" class="game-thumbnail" alt="@product.Name cover" />
+                        }
+                        else
+                        {
+                            <img src="~/images/defaultgame.jpg" class="game-thumbnail" alt="Default cover" />
+                        }
+                    </td>
+                    <td class="text-muted small">@product.Id</td>
+                    <td><strong>@product.Name</strong></td>
+                    <td>
+                        <span style="background:rgba(124,131,253,0.12); color:#a78bfa;
+                                     font-size:0.75rem; padding:0.15rem 0.5rem; border-radius:4px;">
+                            @product.Genre
+                        </span>
+                    </td>
+                    <td><span class="badge-price">$@product.Price.ToString("F2")</span></td>
+                    <td class="text-center">
+                        <a asp-action="ShowDetails" asp-route-id="@product.Id"
+                           class="btn btn-sm btn-secondary me-1" title="View details">
+                            <i class="bi bi-eye"></i>
+                        </a>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <a asp-action="Edit" asp-route-id="@product.Id"
+                               class="btn btn-sm btn-primary me-1" title="Edit">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@product.Id"
+                               class="btn btn-sm btn-danger" title="Delete">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <!-- ── Pagination ───────────────────────────────────────── -->
+    <div class="d-flex justify-content-between align-items-center mt-3">
+        <p class="text-muted small mb-0">
+            Showing page @(currentPage) of @(totalPages) &nbsp;(@totalCount game(s) total)
+        </p>
+        <nav>
+            <ul class="pagination pagination-sm mb-0">
+                <li class="@prevClass">
+                    <a class="page-link" asp-action="Index"
+                       asp-route-page="@(currentPage - 1)"
+                       asp-route-searchByName="@currentSearch"
+                       asp-route-genre="@currentGenre"
+                       asp-route-sortBy="@currentSort">
+                        <i class="bi bi-chevron-left"></i>
+                    </a>
+                </li>
+                @for (int i = 1; i <= totalPages; i++)
+                {
+                    var itemClass = i == currentPage ? "page-item active" : "page-item";
+                    <li class="@itemClass">
+                        <a class="page-link" asp-action="Index"
+                           asp-route-page="@i"
+                           asp-route-searchByName="@currentSearch"
+                           asp-route-genre="@currentGenre"
+                           asp-route-sortBy="@currentSort">@i</a>
+                    </li>
+                }
+                <li class="@nextClass">
+                    <a class="page-link" asp-action="Index"
+                       asp-route-page="@(currentPage + 1)"
+                       asp-route-searchByName="@currentSearch"
+                       asp-route-genre="@currentGenre"
+                       asp-route-sortBy="@currentSort">
+                        <i class="bi bi-chevron-right"></i>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+}
