@@ -107,3 +107,5 @@ The database is seeded with 10 game titles on first run:
 ## License
 
 This project is for educational and portfolio purposes.
+
+**Developer:** Landon Armstrong · [GitHub](https://github.com/Larmstrong1127)
